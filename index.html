@@ -1,294 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Group Generator</title>
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Group Generator</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            padding: 8px;
-            gap: 6px;
-        }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    gap: 6px;
+  }
 
-        /* ── SETUP ── */
-        #setupPanel {
-            background: white;
-            border-radius: 12px;
-            padding: 20px 24px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            max-width: 520px;
-            margin: auto;
-            width: 100%;
-        }
-        #setupPanel h1 { color: #667eea; font-size: 1.5em; font-weight: 700; margin-bottom: 14px; }
-        #setupPanel label { display: block; color: #333; font-weight: 600; font-size: 14px; margin-bottom: 5px; }
-        #setupPanel textarea {
-            width: 100%; height: 120px;
-            border: 2px solid #e0e0e0; border-radius: 6px;
-            font-family: inherit; font-size: 14px;
-            padding: 8px; resize: none; margin-bottom: 14px;
-        }
-        #setupPanel textarea:focus { outline: none; border-color: #667eea; }
-        .controls { display: flex; gap: 12px; align-items: flex-end; }
-        .control-item { flex: 1; }
-        #setupPanel input[type="number"] {
-            width: 100%; border: 2px solid #e0e0e0; border-radius: 6px;
-            font-family: inherit; font-size: 14px; padding: 8px;
-        }
-        #setupPanel input[type="number"]:focus { outline: none; border-color: #667eea; }
+  /* ── SETUP ── */
+  #setupPanel {
+    background: white;
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    max-width: 520px;
+    margin: auto;
+    width: 100%;
+  }
+  #setupPanel h1 { color: #667eea; font-size: 1.5em; font-weight: 700; margin-bottom: 14px; }
+  #setupPanel label { display: block; color: #333; font-weight: 600; font-size: 14px; margin-bottom: 5px; }
+  #setupPanel textarea {
+    width: 100%; height: 120px;
+    border: 2px solid #e0e0e0; border-radius: 6px;
+    font-family: inherit; font-size: 14px;
+    padding: 8px; resize: none; margin-bottom: 14px;
+  }
+  #setupPanel textarea:focus { outline: none; border-color: #667eea; }
+  .controls { display: flex; gap: 12px; align-items: flex-end; }
+  .control-item { flex: 1; }
+  #setupPanel input[type="number"] {
+    width: 100%; border: 2px solid #e0e0e0; border-radius: 6px;
+    font-family: inherit; font-size: 14px; padding: 8px;
+  }
+  #setupPanel input[type="number"]:focus { outline: none; border-color: #667eea; }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; border: none; border-radius: 6px;
-            padding: 9px 22px; font-family: inherit; font-size: 15px; font-weight: 600;
-            cursor: pointer; white-space: nowrap; transition: transform .2s, box-shadow .2s;
-        }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
-        .btn-primary:active { transform: translateY(0); }
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white; border: none; border-radius: 6px;
+    padding: 9px 22px; font-family: inherit; font-size: 15px; font-weight: 600;
+    cursor: pointer; white-space: nowrap; transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+  .btn-primary:active { transform: translateY(0); }
 
-        .btn-secondary {
-            background: #e0e0e0; color: #333; border: none; border-radius: 6px;
-            padding: 7px 16px; font-family: inherit; font-size: 13px; font-weight: 600;
-            cursor: pointer; white-space: nowrap;
-        }
-        .btn-secondary:hover { background: #d0d0d0; }
+  .btn-secondary {
+    background: #e0e0e0; color: #333; border: none; border-radius: 6px;
+    padding: 7px 16px; font-family: inherit; font-size: 13px; font-weight: 600;
+    cursor: pointer; white-space: nowrap;
+  }
+  .btn-secondary:hover { background: #d0d0d0; }
 
-        /* ── RESULTS ── */
-        #teamsWrapper {
-            display: none;
-            flex-direction: column;
-            height: calc(100vh - 16px); /* 2 × 8px body padding */
-            gap: 6px;
-        }
+  /* ── RESULTS ── */
+  #teamsWrapper {
+    display: none;
+    flex-direction: column;
+    height: calc(100vh - 16px);   /* 2 × 8px body padding */
+    gap: 6px;
+  }
 
-        .teams-header {
-            height: 40px;
-            flex-shrink: 0;
-            background: white;
-            border-radius: 8px;
-            padding: 0 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .teams-header h2 { color: #667eea; font-size: 1.05em; font-weight: 700; }
-        .teams-header .sub { color: #999; font-size: .75em; font-weight: 500; margin-left: 6px; }
+  .teams-header {
+    height: 40px;
+    flex-shrink: 0;
+    background: white;
+    border-radius: 8px;
+    padding: 0 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .teams-header h2 { color: #667eea; font-size: 1.05em; font-weight: 700; }
+  .teams-header .sub { color: #999; font-size: .75em; font-weight: 500; margin-left: 6px; }
 
-        /* Grid: rows stretch equally to fill all remaining height */
-        #teamsDisplay {
-            display: grid;
-            grid-template-columns: repeat(var(--cols, 4), 1fr);
-            grid-auto-rows: 1fr;
-            gap: 6px;
-            flex: 1;
-            min-height: 0;
-        }
+  /* Grid: rows stretch equally to fill all remaining height */
+  #teamsDisplay {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 4), 1fr);
+    grid-auto-rows: 1fr;
+    gap: 6px;
+    flex: 1;
+    min-height: 0;
+  }
 
-        .team {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            min-height: 0;
-        }
+  .team {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
 
-        .team-header {
-            flex-shrink: 0;
-            text-align: center;
-            font-weight: 700;
-            padding: 3px 4px;
-            font-size: var(--header-font, 16px);
-            border-bottom: 3px solid currentColor;
-            line-height: 1.3;
-        }
+  .team-header {
+    flex-shrink: 0;
+    text-align: center;
+    font-weight: 700;
+    padding: 3px 4px;
+    font-size: var(--header-font, 16px);
+    border-bottom: 3px solid currentColor;
+    line-height: 1.3;
+  }
 
-        .students-list {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 3px 4px 4px;
-            gap: 2px;
-            justify-content: space-evenly;
-            min-height: 0;
-        }
+  .students-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 3px 4px 4px;
+    gap: 2px;
+    justify-content: space-evenly;
+    min-height: 0;
+  }
 
-        .student-name {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f8f9fa;
-            border-radius: 5px;
-            font-size: var(--name-font, 16px);
-            font-weight: 600;
-            color: #222;
-            text-align: center;
-            padding: 0 4px;
-            white-space: normal;
-            overflow: hidden;
-            line-height: 1.2;
-            min-height: 0;
-            gap: 5px;
-        }
+  .student-name {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 5px;
+    font-size: var(--name-font, 16px);
+    font-weight: 600;
+    color: #222;
+    text-align: center;
+    padding: 0 4px;
+    white-space: normal;
+    overflow: hidden;
+    line-height: 1.2;
+    min-height: 0;
+    gap: 5px;
+  }
 
-        .student-num {
-            font-size: .55em;
-            font-weight: 400;
-            color: #aaa;
-            flex-shrink: 0;
-            line-height: 1;
-            min-width: 1.2em;
-            text-align: right;
-        }
+  .student-num {
+    font-size: .55em;
+    font-weight: 400;
+    color: #aaa;
+    flex-shrink: 0;
+    line-height: 1;
+    min-width: 1.2em;
+    text-align: right;
+  }
 
-        /* Original 6-colour cycle */
-        .c0 .team-header { color: #e74c3c; }
-        .c1 .team-header { color: #3498db; }
-        .c2 .team-header { color: #2ecc71; }
-        .c3 .team-header { color: #f39c12; }
-        .c4 .team-header { color: #9b59b6; }
-        .c5 .team-header { color: #1abc9c; }
-    </style>
+  /* Original 6-colour cycle */
+  .c0 .team-header { color: #e74c3c; }
+  .c1 .team-header { color: #3498db; }
+  .c2 .team-header { color: #2ecc71; }
+  .c3 .team-header { color: #f39c12; }
+  .c4 .team-header { color: #9b59b6; }
+  .c5 .team-header { color: #1abc9c; }
+</style>
 </head>
 <body>
 
 <!-- SETUP -->
 <div id="setupPanel">
-    <h1>🎲 Random Group Generator</h1>
-    <label for="studentNames">Student names (one per line):</label>
-    <textarea id="studentNames" placeholder="Alice&#10;Bob&#10;Charlie&#10;…"></textarea>
-    <div class="controls">
-        <div class="control-item">
-            <label for="numGroups">Number of Groups:</label>
-            <input type="number" id="numGroups" min="2" max="32" value="16">
-        </div>
-        <button class="btn-primary" onclick="generateTeams()">Generate Groups</button>
+  <h1>🎲 Random Group Generator</h1>
+  <label for="studentNames">Student names (one per line):</label>
+  <textarea id="studentNames" placeholder="Alice&#10;Bob&#10;Charlie&#10;…"></textarea>
+  <div class="controls">
+    <div class="control-item">
+      <label for="numGroups">Number of Groups:</label>
+      <input type="number" id="numGroups" min="2" max="32" value="16">
     </div>
+    <button class="btn-primary" onclick="generateTeams()">Generate Groups</button>
+  </div>
 </div>
 
 <!-- RESULTS -->
 <div id="teamsWrapper">
-    <div class="teams-header">
-        <h2>🎯 Groups<span class="sub" id="studentCount"></span></h2>
-        <div style="display:flex;gap:8px;">
-            <button class="btn-primary" onclick="generateTeams()" style="padding:5px 14px;font-size:13px;">🔀 Shuffle</button>
-            <button class="btn-secondary" onclick="showSetup()">← New Setup</button>
-        </div>
+  <div class="teams-header">
+    <h2>🎯 Groups<span class="sub" id="studentCount"></span></h2>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-primary" onclick="generateTeams()" style="padding:5px 14px;font-size:13px;">🔀 Shuffle</button>
+      <button class="btn-secondary" onclick="showSetup()">← New Setup</button>
     </div>
-    <div id="teamsDisplay"></div>
+  </div>
+  <div id="teamsDisplay"></div>
 </div>
 
 <script>
-    function gridCols(n) {
-        if (n <= 2)  return 2;
-        if (n <= 3)  return 3;
-        if (n <= 4)  return 4;
-        if (n <= 6)  return 3;
-        if (n <= 8)  return 4;
-        if (n <= 10) return 5;
-        if (n <= 12) return 4;
-        if (n <= 15) return 5;
-        if (n <= 16) return 4;   // 4 cols × 4 rows for 16 pairs
-        if (n <= 20) return 5;
-        return 6;
-    }
+function gridCols(n) {
+  if (n <= 2)  return 2;
+  if (n <= 3)  return 3;
+  if (n <= 4)  return 4;
+  if (n <= 6)  return 3;
+  if (n <= 8)  return 4;
+  if (n <= 10) return 5;
+  if (n <= 12) return 4;
+  if (n <= 15) return 5;
+  if (n <= 16) return 4;   // 4 cols × 4 rows for 16 pairs
+  if (n <= 20) return 5;
+  return 6;
+}
 
-    /*
-     * Render-then-fit: start at a large font and step down until no card
-     * overflows its rendered box. The browser does the measuring — no
-     * guesswork formulas. This guarantees names are as large as possible.
-     */
-    function fitFonts(display) {
-        let px   = 32;    // start optimistically large
-        const MIN  = 7;
-        const STEP = 0.5;
+/*
+ * Unbiased Fisher-Yates shuffle.
+ * (The old `array.sort(() => Math.random() - 0.5)` trick is NOT uniform:
+ * it favours certain starting positions, so some names appeared first
+ * far more often than others.)
+ *
+ * Uses crypto.getRandomValues with rejection sampling so every index is
+ * exactly equally likely (no modulo bias).
+ */
+function randomInt(maxExclusive) {
+  const range = 0x100000000;                    // 2^32
+  const limit = range - (range % maxExclusive); // reject values above this
+  const buf = new Uint32Array(1);
+  let x;
+  do {
+    crypto.getRandomValues(buf);
+    x = buf[0];
+  } while (x >= limit);
+  return x % maxExclusive;
+}
 
-        while (px > MIN) {
-            display.style.setProperty('--name-font',   px + 'px');
-            display.style.setProperty('--header-font', Math.round(px * 0.75) + 'px');
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = randomInt(i + 1);   // 0 <= j <= i
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
-            const cards = display.querySelectorAll('.team');
-            const overflowing = Array.from(cards).some(
-                c => c.scrollHeight > c.clientHeight + 1
-            );
-            if (!overflowing) break;
-            px -= STEP;
-        }
-    }
+// Names are inserted via innerHTML, so escape special characters
+function escapeHTML(s) {
+  return s.replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+}
 
-    function showSetup() {
-        document.getElementById('setupPanel').style.display = '';
-        document.getElementById('teamsWrapper').style.display = 'none';
-    }
+/*
+ * Render-then-fit: start at a large font and step down until no card
+ * overflows its rendered box. The browser does the measuring — no
+ * guesswork formulas. This guarantees names are as large as possible.
+ */
+function fitFonts(display) {
+  let px = 32;          // start optimistically large
+  const MIN  = 7;
+  const STEP = 0.5;
 
-    function generateTeams() {
-        const numGroups = parseInt(document.getElementById('numGroups').value);
-        const display   = document.getElementById('teamsDisplay');
+  while (px > MIN) {
+    display.style.setProperty('--name-font',   px + 'px');
+    display.style.setProperty('--header-font', Math.round(px * 0.75) + 'px');
 
-        const students = document.getElementById('studentNames').value
-            .split('\n').map(s => s.trim()).filter(Boolean);
+    const cards = display.querySelectorAll('.team');
+    const overflowing = Array.from(cards).some(
+      c => c.scrollHeight > c.clientHeight + 1
+    );
+    if (!overflowing) break;
+    px -= STEP;
+  }
+}
 
-        if (!students.length)            { alert('Please enter at least one name.'); return; }
-        if (numGroups < 2)               { alert('Need at least 2 groups.'); return; }
-        if (numGroups > students.length) { alert('More groups than students.'); return; }
+function showSetup() {
+  document.getElementById('setupPanel').style.display  = '';
+  document.getElementById('teamsWrapper').style.display = 'none';
+}
 
-        // Shuffle
-        const shuffled = [...students].sort(() => Math.random() - 0.5);
+function generateTeams() {
+  const numGroups = parseInt(document.getElementById('numGroups').value);
+  const display   = document.getElementById('teamsDisplay');
+  const students  = document.getElementById('studentNames').value
+    .split('\n').map(s => s.trim()).filter(Boolean);
 
-        // Distribute evenly
-        const base = Math.floor(students.length / numGroups);
-        const rem  = students.length % numGroups;
-        const teams = [];
-        let idx = 0;
-        for (let i = 0; i < numGroups; i++) {
-            const sz = i < rem ? base + 1 : base;
-            teams.push(shuffled.slice(idx, idx + sz));
-            idx += sz;
-        }
+  if (!students.length)            { alert('Please enter at least one name.'); return; }
+  if (!(numGroups >= 2))           { alert('Need at least 2 groups.');         return; }
+  if (numGroups > students.length) { alert('More groups than students.');     return; }
 
-        const cols = gridCols(numGroups);
-        display.style.setProperty('--cols',        cols);
-        // Set an initial large size; fitFonts will shrink it as needed
-        display.style.setProperty('--name-font',   '32px');
-        display.style.setProperty('--header-font', '24px');
+  // Unbiased shuffle (Fisher-Yates)
+  const shuffled = shuffle(students);
 
-        display.innerHTML = teams.map((team, i) => `
-            <div class="team c${i % 6}">
-                <div class="team-header">
-                    Group ${i + 1}<span style="opacity:.5;font-weight:500;font-size:.7em;color:#555;"> (${team.length})</span>
-                </div>
-                <div class="students-list">
-                    ${team.map((s, j) => `<div class="student-name"><span class="student-num">${j + 1}</span>${s}</div>`).join('')}
-                </div>
-            </div>
-        `).join('');
+  // Distribute evenly
+  const base = Math.floor(students.length / numGroups);
+  const rem  = students.length % numGroups;
+  const teams = [];
+  let idx = 0;
+  for (let i = 0; i < numGroups; i++) {
+    const sz = i < rem ? base + 1 : base;
+    teams.push(shuffled.slice(idx, idx + sz));
+    idx += sz;
+  }
 
-        document.getElementById('studentCount').textContent = ` · ${students.length} students`;
-        document.getElementById('setupPanel').style.display = 'none';
-        document.getElementById('teamsWrapper').style.display = 'flex';
+  const cols = gridCols(numGroups);
+  display.style.setProperty('--cols', cols);
 
-        // Two rAF frames: first paints layout, second has real dimensions
-        requestAnimationFrame(() => requestAnimationFrame(() => fitFonts(display)));
-    }
+  // Set an initial large size; fitFonts will shrink it as needed
+  display.style.setProperty('--name-font',   '32px');
+  display.style.setProperty('--header-font', '24px');
 
-    // 32 demo names
-    document.getElementById('studentNames').value = [
-        'Alice','Bob','Charlie','Diana','Ethan','Fiona','George','Hannah',
-        'Isaac','Julia','Kevin','Laura','Marcus','Nina','Oscar','Paula',
-        'Quinn','Rachel','Sam','Tara','Ulrich','Violet','Walter','Xena',
-        'Yusuf','Zoe','Aaron','Bella','Carlos','Demi','Evan','Faith'
-    ].join('\n');
+  display.innerHTML = teams.map((team, i) => `
+    <div class="team c${i % 6}">
+      <div class="team-header">
+        Group ${i + 1}<span style="opacity:.5;font-weight:500;font-size:.7em;color:#555;"> (${team.length})</span>
+      </div>
+      <div class="students-list">
+        ${team.map((s, j) => `<div class="student-name"><span class="student-num">${j + 1}</span>${escapeHTML(s)}</div>`).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('studentCount').textContent = ` · ${students.length} students`;
+  document.getElementById('setupPanel').style.display   = 'none';
+  document.getElementById('teamsWrapper').style.display = 'flex';
+
+  // Two rAF frames: first paints layout, second has real dimensions
+  requestAnimationFrame(() => requestAnimationFrame(() => fitFonts(display)));
+}
+
+// 32 demo names
+document.getElementById('studentNames').value = [
+  'Alice','Bob','Charlie','Diana','Ethan','Fiona','George','Hannah',
+  'Isaac','Julia','Kevin','Laura','Marcus','Nina','Oscar','Paula',
+  'Quinn','Rachel','Sam','Tara','Ulrich','Violet','Walter','Xena',
+  'Yusuf','Zoe','Aaron','Bella','Carlos','Demi','Evan','Faith'
+].join('\n');
 </script>
 </body>
 </html>
